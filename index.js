@@ -7,7 +7,7 @@ import axios from 'axios';
 import dotenv from "dotenv";
 import cors from 'cors';
 dotenv.config();
-import {User,Profile} from "./formats/usr.js"; // Import the User model
+import User from "./formats/usr.js"; // Import the User model
 import { ConvertToHash, Login_Token_Generator, VerifyPassword, check_cred, generateOTP, sendOTPByEmail, FP_OTP, expiryFx } from "./zlib.js";
 const MONGODB_HOST = process.env.DB_HOST;
 const MONGODB_PORT = process.env.DB_PORT;

@@ -1,7 +1,9 @@
 // models/user.js
-import { mongoose } from 'mongoose';
 
-const profileSchema = new mongoose.Schema({
+import { Schema, model } from 'mongoose';
+
+// Define the profile schema
+const profileSchema = new Schema({
   email: { unique: true, type: String },
   password: String,
   accountStatus: Boolean,
@@ -11,8 +13,8 @@ const profileSchema = new mongoose.Schema({
   countryCode: String
 });
 
-
-const workSchema = new mongoose.Schema({
+// Define the work schema
+const workSchema = new Schema({
   registrationNumber: String,
   typeOfWork: String,
   title: String,
@@ -23,24 +25,11 @@ const workSchema = new mongoose.Schema({
   Recipt: String
 });
 
-
-
-
-const userSchema = new mongoose.Schema({
-  profile: profileSchema,
+// Combine the profile and work schemas into the user schema
+const userSchema = new Schema({
+  profile: { type: profileSchema, required: true },
   works: [workSchema]
 });
 
-
-
-// Create models from the schemas
-const Profile = mongoose.model('Profile', profileSchema);
-const User = mongoose.model('User', userSchema);
-
-// Export the models if you are using modules
-export default { User, Profile };
-
-
-
-// export default mongoose.model('User', userSchema);
-
+// Export the user model
+export default model('User', userSchema);
