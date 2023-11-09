@@ -339,8 +339,8 @@ app.post("/api/gsi/authenticate", async (req, res) => {
       } else {
         const expiryTime = Date.now() + 30 * 60 * 1000; // 30 minutes from now
         const token = Login_Token_Generator(
-          users.profile.email,
-          users.profile.password,
+          users[0].profile.email,
+          users[0].profile.password,
           expiryTime.toString()
         );
         User_list.push({
