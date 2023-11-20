@@ -79,7 +79,7 @@ async function RNU(email, password) {
         expiryTime: expiryTime,
       };
       specialRq.push(SR);
-      const link = "https://wpico.com/activaterequest/" + SR.code.toString();
+      const link = "http://localhost/sr/" + SR.code.toString();
       const confirmation = await sendOTPByEmail(email, link);
       if (confirmation.success) {
         return { message: "Email activation link sended", success: true };
@@ -110,16 +110,21 @@ async function RNU(email, password) {
 
 async function Login(email, password) {
   try {
+
+    const users = await User.find({ "profile.email": email });
+
     if (User_list.length > 0) {
       const filteredUsers = User_list.filter(
         (user) => user.email === email.toLowerCase()
       );
       if (filteredUsers.length > 0) {
-        return { message: "Already Signed In", status: false };
+        //send full details of the user
+        const { password, accountStatus, ...cleanProfile } = users[0].profile;
+        const loginData = { token: token, profile: cleanProfile, works: users[0].works };
+        return { message: "Sign-in successful", status: true, loginData: loginData };
       }
     }
 
-    const users = await User.find({ "profile.email": email });
 
     if (users.length > 0) {
       const res = await VerifyPassword(password, users[0].profile.password);
@@ -266,19 +271,19 @@ app.post("/api/sr", async (req, res) => {
 
       if (updatedUser) {
         console.log("User updated:", updatedUser);
+
+        const { password, accountStatus, ...cleanProfile } = updatedUser.profile;
+        const loginData = {token: token, profile: cleanProfile, works: updatedUser.works };
         return res
           .status(200)
           .json({
+            success: true,
             message: "Email verified",
-            loginInfo: {
-              email: _user[0].email.toLowerCase(),
-              token: _user[0].token,
-              expiryTime: _user[0].expiryTime,
-            },
+            loginInfo: loginData,
           });
       } else {
         console.log("User not found");
-        return res.status(400).json({ message: "User not found" });
+        return res.status(400).json({ success: false, message: "User not found" });
       }
     } catch (error) {
       console.error("Error updating user:", error);
@@ -348,9 +353,11 @@ app.post("/api/gsi/authenticate", async (req, res) => {
           token: token,
           expiryTime: expiryTime,
         });
+        const { password, accountStatus, ...cleanProfile } = users[0].profile;
+        const loginData = { token: token, profile: cleanProfile, works: users[0].works };
         res
           .status(200)
-          .json({ success: true, message: "Sign-in successful", token: token });
+          .json({ success: true, message: "Sign-in successful", loginData: loginData });
       }
     } else {
       console.log("register Now");
@@ -383,9 +390,12 @@ app.post("/api/gsi/authenticate", async (req, res) => {
           token: token,
           expiryTime: expiryTime,
         });
+
+        const { password, accountStatus, ...cleanProfile } = _res.profile;
+        const loginData = { email: _res.profile.email, token: token, profile: cleanProfile, works: _res.works };
         res
           .status(200)
-          .json({ success: true, message: "Sign-in successful", token: token });
+          .json({ success: true, message: "Sign-in successful", loginData: loginData });
       } catch (error) {
         if (error.code === 11000) {
           // Duplicate key error (username is not unique)
@@ -496,6 +506,16 @@ app.post("/api/setpassword", async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
+
+
+
+
+
+
+
+
+
+
 
 // Start the server
 app.listen(port, () => {
