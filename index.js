@@ -347,9 +347,9 @@ app.post("/api/gsi/authenticate", async (req, res) => {
           const cleanProfile = { email: users[0].profile.email, fullName: users[0].profile.fullName, address: users[0].profile.address, phone: users[0].profile.phone, country: users[0].profile.country };
           const loginData = { token: filteredUsers[0].token, profile: cleanProfile, works: users[0].works, expiryTime: filteredUsers[0].expiryTime };
           res
-          .status(200)
-          .json({ success: true, message: "Sign-in successful", loginData: loginData });
-      }
+            .status(200)
+            .json({ success: true, message: "Sign-in successful", loginData: loginData });
+        }
       } else {
         const expiryTime = Date.now() + 30 * 60 * 1000; // 30 minutes from now
         const token = Login_Token_Generator(
@@ -521,7 +521,42 @@ app.post("/api/setpassword", async (req, res) => {
 
 
 
+app.post("/api/updateprofile", async (req, res) => {
+  const { token, profileInfo } = req.body;
+  const user = User_list.find((user) => (user.email === profileInfo.email) && user.token === token);
+  if (user) {
+    // User with matching email and token found, you can work with 'user' here.
 
+    const result = await User.updateOne(
+      { "profile.email": profileInfo.email },
+      {
+        $set: {
+          "profile.fullName": profileInfo.fullName,
+          "profile.address": profileInfo.address,
+          "profile.phone": profileInfo.phone,
+          "profile.country": profileInfo.country
+        }
+      }
+    );
+    if (result.nModified === 1) {
+      // The update was successful, and one document was modified.
+      console.log("Profile updated successfully.");
+      res.status(200).json({ success: true, message: "Profile updated successfully." });
+    } else if (result.n === 0) {
+      // No document matched the filter condition.
+      console.log("No user found with the specified email.");
+      res.status(404).json({ success: true, message: "No user found with the specified email." });
+    } else {
+      // The update operation didn't modify any documents (perhaps the new data is the same as the existing data).
+      console.log("Profile data was not changed.");
+      res.status(200).json({ success: true, message: "Profile data was not changed." });
+    }
+  } else {
+    console.log("No user found with the specified email error code 2.");
+    res.status(404).json({ success: true, message: "No user found with the specified email." });
+  }
+
+})
 
 
 
