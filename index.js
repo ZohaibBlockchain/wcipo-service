@@ -341,7 +341,7 @@ app.post("/api/gsi/authenticate", async (req, res) => {
         console.log(User_list);
 
         const filteredUsers = User_list.filter(
-          (user) => user.profile.email === email.toLowerCase()
+          (user) => user.email === email.toLowerCase()
         );
         if (filteredUsers.length > 0) {
           res
