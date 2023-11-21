@@ -58,7 +58,7 @@ async function RNU(email, password) {
           fullName: "",
           address: "",
           phone: "",
-          countryCode: "",
+          country: "",
         },
         works: [
           // Array of works if any at the time of creation
@@ -277,7 +277,7 @@ app.post("/api/sr", async (req, res) => {
         console.log("User updated:", updatedUser);
 
         const { password, accountStatus, ...cleanProfile } = updatedUser.profile;
-        const loginData = { token: token, profile: cleanProfile, works: updatedUser.works,expiryTime:_user[0].expiryTime };
+        const loginData = { token: token, profile: cleanProfile, works: updatedUser.works, expiryTime: _user[0].expiryTime };
         return res
           .status(200)
           .json({
@@ -337,16 +337,18 @@ app.post("/api/gsi/authenticate", async (req, res) => {
     if (users.length > 0) {
       console.log("Login Now");
       if (User_list.length > 0) {
-        
+
         console.log(User_list);
 
         const filteredUsers = User_list.filter(
           (user) => user.email === email.toLowerCase()
         );
         if (filteredUsers.length > 0) {
+          const cleanProfile = { email: users[0].profile.email, fullName: users[0].profile.fullName, address: users[0].profile.address, phone: users[0].profile.phone, country: users[0].profile.country };
+          const loginData = { token: filteredUsers[0].token, profile: cleanProfile, works: users[0].works, expiryTime: filteredUsers[0].expiryTime };
           res
             .status(401)
-            .json({ success: false, message: "Already Signed In" });
+            .json({ message: "Sign-in successful", status: true, loginData: loginData});
         }
       } else {
         const expiryTime = Date.now() + 30 * 60 * 1000; // 30 minutes from now
@@ -360,7 +362,7 @@ app.post("/api/gsi/authenticate", async (req, res) => {
           token: token,
           expiryTime: expiryTime,
         });
-        const cleanProfile = {email:users[0].profile.email,fullName:users[0].profile.fullName,address:users[0].profile.address,phone:users[0].profile.phone,country:users[0].profile.country};
+        const cleanProfile = { email: users[0].profile.email, fullName: users[0].profile.fullName, address: users[0].profile.address, phone: users[0].profile.phone, country: users[0].profile.country };
         const loginData = { token: token, profile: cleanProfile, works: users[0].works, expiryTime: expiryTime };
         res
           .status(200)
@@ -399,9 +401,9 @@ app.post("/api/gsi/authenticate", async (req, res) => {
         });
 
 
-        const cleanProfile = {email:_res.profile.email,fullName:_res.profile.fullName,address:_res.profile.address,phone:_res.profile.phone,country:_res.profile.country};
+        const cleanProfile = { email: _res.profile.email, fullName: _res.profile.fullName, address: _res.profile.address, phone: _res.profile.phone, country: _res.profile.country };
         const loginData = { token: token, profile: cleanProfile, works: _res.works, expiryTime: expiryTime };
-        
+
         res
           .status(200)
           .json({ success: true, message: "Sign-in successful", loginData: loginData });
