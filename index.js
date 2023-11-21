@@ -538,19 +538,14 @@ app.post("/api/updateprofile", async (req, res) => {
         }
       }
     );
-    if (result.nModified === 1) {
-      // The update was successful, and one document was modified.
-      console.log("Profile updated successfully.");
-      res.status(200).json({ success: true, message: "Profile updated successfully." });
-    } else if (result.n === 0) {
+    if (result[0] === 0) {
       // No document matched the filter condition.
       console.log("No user found with the specified email.");
       res.status(404).json({ success: true, message: "No user found with the specified email." });
-    } else {
-      // The update operation didn't modify any documents (perhaps the new data is the same as the existing data).
-      console.log("Profile data was not changed.");
-      res.status(200).json({ success: true, message: "Profile data was not changed." });
-    }
+    } else  {
+      console.log("Profile updated successfully.");
+      res.status(200).json({ success: true, message: "Profile updated successfully." });
+    } 
   } else {
     console.log("No user found with the specified email error code 2.");
     res.status(404).json({ success: true, message: "No user found with the specified email." });
