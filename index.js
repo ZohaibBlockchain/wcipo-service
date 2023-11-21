@@ -121,7 +121,7 @@ async function Login(email, password) {
         //send full details of the user
         const { password, accountStatus, ...cleanProfile } = users[0].profile;
         const loginData = { token: token, profile: cleanProfile, works: users[0].works };
-        return { message: "Sign-in successful", status: true, loginData: loginData };
+        return { message: "Sign-in successful", status: true, loginData: loginData, expiryTime: filteredUsers[0].expiryTime };
       }
     }
 
@@ -148,7 +148,7 @@ async function Login(email, password) {
           };
           specialRq.push(SR);
           const link =
-            "https://wpico.com/activaterequest/" + SR.code.toString();
+            "https://wpico.com/sr/" + SR.code.toString();
           const confirmation = await sendOTPByEmail(email, link);
           if (confirmation.success) {
             return { message: "Activation link sended", status: res };
@@ -162,10 +162,14 @@ async function Login(email, password) {
             token: token,
             expiryTime: expiryTime,
           });
-          return {
-            message: { token: token, message: "Sign-in successful" },
-            status: res,
-          };
+          // return {
+          //   message: { token: token, message: "Sign-in successful" },
+          //   status: res,
+          // };
+          //send full details of the user
+          const { password, accountStatus, ...cleanProfile } = users[0].profile;
+          const loginData = { token: token, profile: cleanProfile, works: users[0].works };
+          return { message: "Sign-in successful", status: true, loginData: loginData, expiryTime: expiryTime };
         }
       } else {
         return { message: "Password incorrect", status: false };
@@ -273,7 +277,7 @@ app.post("/api/sr", async (req, res) => {
         console.log("User updated:", updatedUser);
 
         const { password, accountStatus, ...cleanProfile } = updatedUser.profile;
-        const loginData = {token: token, profile: cleanProfile, works: updatedUser.works };
+        const loginData = { token: token, profile: cleanProfile, works: updatedUser.works,expiryTime:_user[0].expiryTime };
         return res
           .status(200)
           .json({
@@ -354,7 +358,7 @@ app.post("/api/gsi/authenticate", async (req, res) => {
           expiryTime: expiryTime,
         });
         const { password, accountStatus, ...cleanProfile } = users[0].profile;
-        const loginData = { token: token, profile: cleanProfile, works: users[0].works };
+        const loginData = { token: token, profile: cleanProfile, works: users[0].works, expiryTime: expiryTime };
         res
           .status(200)
           .json({ success: true, message: "Sign-in successful", loginData: loginData });

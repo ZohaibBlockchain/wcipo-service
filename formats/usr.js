@@ -22,7 +22,8 @@ const workSchema = new Schema({
   certificate: String,
   statusOfRequest: String,
   PackageName: String,
-  Recipt: String
+  Recipt: String,
+  paidAmount:String
 });
 
 // Combine the profile and work schemas into the user schema
