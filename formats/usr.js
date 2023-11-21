@@ -10,7 +10,7 @@ const profileSchema = new Schema({
   fullName: String,
   address: String,
   phone: String,
-  countryCode: String
+  country: String
 });
 
 // Define the work schema

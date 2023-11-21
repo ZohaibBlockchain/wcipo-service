@@ -360,7 +360,7 @@ app.post("/api/gsi/authenticate", async (req, res) => {
           token: token,
           expiryTime: expiryTime,
         });
-        const { password, accountStatus, ...cleanProfile } = users[0].profile;
+        const cleanProfile = {email:users[0].profile.email,fullName:users[0].profile.fullName,address:users[0].profile.address,phone:users[0].profile.phone,country:users[0].profile.country};
         const loginData = { token: token, profile: cleanProfile, works: users[0].works, expiryTime: expiryTime };
         res
           .status(200)
