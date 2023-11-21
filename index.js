@@ -398,8 +398,10 @@ app.post("/api/gsi/authenticate", async (req, res) => {
           expiryTime: expiryTime,
         });
 
-        const { password, accountStatus, ...cleanProfile } = _res.profile;
-        const loginData = { email: _res.profile.email, token: token, profile: cleanProfile, works: _res.works };
+
+        const cleanProfile = {email:_res.profile.email,fullName:_res.profile.fullName,address:_res.profile.address,phone:_res.profile.phone,country:_res.profile.country};
+        const loginData = { token: token, profile: cleanProfile, works: _res.works, expiryTime: expiryTime };
+        
         res
           .status(200)
           .json({ success: true, message: "Sign-in successful", loginData: loginData });
