@@ -378,7 +378,7 @@ app.post("/api/gsi/authenticate", async (req, res) => {
             fullName: "",
             address: "",
             phone: "",
-            countryCode: "",
+            country: "",
           },
           works: [
             // Array of works if any at the time of creation
