@@ -348,7 +348,7 @@ app.post("/api/gsi/authenticate", async (req, res) => {
           const loginData = { token: filteredUsers[0].token, profile: cleanProfile, works: users[0].works, expiryTime: filteredUsers[0].expiryTime };
           res
             .status(200)
-            .json({ message: "Sign-in successful", status: true, loginData: loginData});
+            .json({ status: true ,message: "Sign-in successful", loginData: loginData});
         }
       } else {
         const expiryTime = Date.now() + 30 * 60 * 1000; // 30 minutes from now
