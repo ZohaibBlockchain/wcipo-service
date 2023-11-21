@@ -534,7 +534,7 @@ app.post("/api/updateprofile", async (req, res) => {
           "profile.fullName": profileInfo.fullName,
           "profile.address": profileInfo.address,
           "profile.phone": profileInfo.phone,
-          "profile.country": profileInfo.country
+          "profile.country": profileInfo.country.value
         }
       }
     );
