@@ -542,14 +542,22 @@ app.post("/api/updateprofile", async (req, res) => {
       // No document matched the filter condition.
       console.log("No user found with the specified email.");
       res.status(404).json({ success: true, message: "No user found with the specified email." });
-    } else  {
-      console.log("Profile updated successfully.");
-      res.status(200).json({ success: true, message: "Profile updated successfully." });
-    } 
-  } else {
-    console.log("No user found with the specified email error code 2.");
-    res.status(404).json({ success: true, message: "No user found with the specified email." });
+    } else {
+      console.log("Profile updated successfully.",result);
+
+
+      // const cleanProfile = { email: users[0].profile.email, fullName: users[0].profile.fullName, address: users[0].profile.address, phone: users[0].profile.phone, country: users[0].profile.country };
+      // const loginData = { token: filteredUsers[0].token, profile: cleanProfile, works: users[0].works, expiryTime: filteredUsers[0].expiryTime };
+      res
+        .status(200)
+        .json({ success: true, message: "Sign-in successful", loginData: loginData });
+    }
+    res.status(200).json({ success: true, message: "Profile updated successfully." });
   }
+} else {
+  console.log("No user found with the specified email error code 2.");
+  res.status(404).json({ success: true, message: "No user found with the specified email." });
+}
 
 })
 
