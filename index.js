@@ -548,10 +548,10 @@ app.post("/api/updateprofile", async (req, res) => {
 
       // const cleanProfile = { email: users[0].profile.email, fullName: users[0].profile.fullName, address: users[0].profile.address, phone: users[0].profile.phone, country: users[0].profile.country };
       // const loginData = { token: filteredUsers[0].token, profile: cleanProfile, works: users[0].works, expiryTime: filteredUsers[0].expiryTime };
-      res
-        .status(200)
-        .json({ success: true, message: "Sign-in successful", loginData: loginData });
-    }
+    //   res
+    //     .status(200)
+    //     .json({ success: true, message: "Sign-in successful", loginData: loginData });
+    // }
     res.status(200).json({ success: true, message: "Profile updated successfully." });
   }
 } else {
