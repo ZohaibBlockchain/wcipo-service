@@ -569,7 +569,7 @@ app.post("/api/updateprofile", async (req, res) => {
 
 app.post("/api/signout", async (req, res) => {
   const { token, profileInfo } = req.body;
-  User_list = User_list.filter((user) => user.email ===  profileInfo.email);
+  User_list = User_list.filter((user) => (user.email !==  profileInfo.email && token !== user.token));
   res
           .status(200)
           .json({ success: true, message: "successfully sign out."});
