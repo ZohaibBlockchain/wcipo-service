@@ -546,7 +546,6 @@ app.post("/api/updateprofile", async (req, res) => {
       console.log("Profile updated successfully.", result);
       const users = await User.find({ "profile.email": email });
       if (users.length > 0) {
-
         const filteredUsers = User_list.filter(
           (user) => user.email === profileInfo.email.toLowerCase()
         );
