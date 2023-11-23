@@ -544,7 +544,7 @@ app.post("/api/updateprofile", async (req, res) => {
       res.status(404).json({ success: true, message: "No user found with the specified email." });
     } else {
       console.log("Profile updated successfully.", result);
-      const users = await User.find({ "profile.email": email });
+      const users = await User.find({ "profile.email": profileInfo.email.toLowerCase() });
       if (users.length > 0) {
         const filteredUsers = User_list.filter(
           (user) => user.email === profileInfo.email.toLowerCase()
