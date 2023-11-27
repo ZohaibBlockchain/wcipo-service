@@ -285,7 +285,7 @@ app.post("/api/sr", async (req, res) => {
           .json({
             success: true,
             message: "Email verified",
-            loginInfo: loginData,
+            loginData: loginData,
           });
       } else {
         console.log("User not found");
