@@ -256,14 +256,13 @@ app.post("/api/sr", async (req, res) => {
   console.log(specialRq);
   const currentTime = Date.now();
   const _user = specialRq.filter(
-    (user) => user.code === otp && user.expiryTime > currentTime
+    (user) => user.code === parseInt(otp) && user.expiryTime > currentTime
   );
 
-  console.log(_user,'------',typeof(otp),typeof(specialRq[0].code));
 
   if (_user.length > 0) {
     //remove the request from list
-    specialRq = specialRq.filter((user) => user.code != otp);
+    specialRq = specialRq.filter((user) => user.code != parseInt(otp));
     User_list.push({
       email: _user[0].email.toLowerCase(),
       token: _user[0].token,
@@ -298,7 +297,7 @@ app.post("/api/sr", async (req, res) => {
     }
   } else {
     //remove the request from list
-    specialRq = specialRq.filter((user) => user.code != otp);
+    specialRq = specialRq.filter((user) => user.code != parseInt(otp));
     return res.status(400).json({ message: "Invalid or Expire Code" });
   }
 });
