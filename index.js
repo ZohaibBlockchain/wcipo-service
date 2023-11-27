@@ -238,7 +238,7 @@ app.post("/api/signin", async (req, res) => {
       res.status(400).json(result);
       return;
     } else {
-      res.status(200).json(result.message);
+      res.status(200).json(result);
     }
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
