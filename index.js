@@ -259,6 +259,8 @@ app.post("/api/sr", async (req, res) => {
     (user) => user.code === otp && user.expiryTime > currentTime
   );
 
+  console.log(_user,'------',otp);
+
   if (_user.length > 0) {
     //remove the request from list
     specialRq = specialRq.filter((user) => user.code != otp);
