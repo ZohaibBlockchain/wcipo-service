@@ -253,6 +253,7 @@ app.post("/api/signin", async (req, res) => {
 // SpecialRequest route
 app.post("/api/sr", async (req, res) => {
   const { otp } = req.body;
+  console.log(otp);
   const currentTime = Date.now();
   const _user = specialRq.filter(
     (user) => user.code === otp && user.expiryTime > currentTime
@@ -295,7 +296,7 @@ app.post("/api/sr", async (req, res) => {
     }
   } else {
     //remove the request from list
-    specialRq = specialRq.filter((user) => user.code != code);
+    specialRq = specialRq.filter((user) => user.code != otp);
     return res.status(400).json({ message: "Invalid or Expire Code" });
   }
 });
