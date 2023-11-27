@@ -279,7 +279,7 @@ app.post("/api/sr", async (req, res) => {
         console.log("User updated:", updatedUser);
 
         const { password, accountStatus, ...cleanProfile } = updatedUser.profile;
-        const loginData = { token: token, profile: cleanProfile, works: updatedUser.works, expiryTime: _user[0].expiryTime };
+        const loginData = { token: _user[0].token, profile: cleanProfile, works: updatedUser.works, expiryTime: _user[0].expiryTime };
         return res
           .status(200)
           .json({
