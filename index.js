@@ -121,7 +121,7 @@ async function Login(email, password) {
         //send full details of the user
         const cleanProfile = { email: users[0].profile.email, fullName: users[0].profile.fullName, address: users[0].profile.address, phone: users[0].profile.phone, country: users[0].profile.country };
         const loginData = { token: filteredUsers.token, profile: cleanProfile, works: users[0].works };
-        return { message: "Sign-in successful", status: true, loginData: loginData, expiryTime: filteredUsers[0].expiryTime };
+        return { message: "Sign-in successful", success: true, loginData: loginData, expiryTime: filteredUsers[0].expiryTime };
       }
     }
 
@@ -151,9 +151,9 @@ async function Login(email, password) {
             "https://wpico.com/sr/" + SR.code.toString();
           const confirmation = await sendOTPByEmail(email, link);
           if (confirmation.success) {
-            return { message: "Activation link sended", status: res };
+            return { message: "Activation link sended", success: res };
           } else {
-            return { message: "Failed to activate", status: res };
+            return { message: "Failed to activate", success: res };
           }
         } else {
           console.log(email, users);
@@ -164,17 +164,17 @@ async function Login(email, password) {
           });
           const cleanProfile = { email: users[0].profile.email, fullName: users[0].profile.fullName, address: users[0].profile.address, phone: users[0].profile.phone, country: users[0].profile.country };
           const loginData = { token: token, profile: cleanProfile, works: users[0].works };
-          return { message: "Sign-in successful", status: true, loginData: loginData, expiryTime: expiryTime };
+          return { message: "Sign-in successful", success: true, loginData: loginData, expiryTime: expiryTime };
         }
       } else {
-        return { message: "Password incorrect", status: false };
+        return { message: "Password incorrect", success: false };
       }
     } else {
-      return { message: "User not found", status: false };
+      return { message: "User not found", success: false };
     }
   } catch (error) {
     console.error("Error finding user:", error);
-    return { message: { message: "Error finding user" }, status: false };
+    return { message: { message: "Error finding user" }, success: false };
   }
 }
 
@@ -234,7 +234,7 @@ app.post("/api/signin", async (req, res) => {
   try {
     const result = await Login(email, password);
 
-    if (!result.status) {
+    if (!result.success) {
       res.status(400).json(result);
       return;
     } else {
