@@ -232,13 +232,13 @@ app.post("/api/signup", async (req, res) => {
 app.post("/api/signin", async (req, res) => {
   const { email, password } = req.body;
   try {
-    const status = await Login(email, password);
+    const result = await Login(email, password);
 
-    if (!status.status) {
-      res.status(400).json({ message: status.message });
+    if (!result.status) {
+      res.status(400).json(result);
       return;
     } else {
-      res.status(200).json(status.message);
+      res.status(200).json(result.message);
     }
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
