@@ -79,7 +79,7 @@ async function RNU(email, password) {
         expiryTime: expiryTime,
       };
       specialRq.push(SR);
-      const link = "http://localhost/sr/" + SR.code.toString();
+      const link = "http://localhost:3000/sr/" + SR.code.toString();
       const confirmation = await sendOTPByEmail(email, link);
       if (confirmation.success) {
         return { message: "Email activation link sended", success: true };
