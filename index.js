@@ -120,7 +120,7 @@ async function Login(email, password) {
       if (filteredUsers.length > 0) {
         //send full details of the user
         const cleanProfile = { email: users[0].profile.email, fullName: users[0].profile.fullName, address: users[0].profile.address, phone: users[0].profile.phone, country: users[0].profile.country };
-        const loginData = { token: token, profile: cleanProfile, works: users[0].works };
+        const loginData = { token: filteredUsers.token, profile: cleanProfile, works: users[0].works };
         return { message: "Sign-in successful", status: true, loginData: loginData, expiryTime: filteredUsers[0].expiryTime };
       }
     }
