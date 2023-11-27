@@ -252,15 +252,15 @@ app.post("/api/signin", async (req, res) => {
 
 // SpecialRequest route
 app.post("/api/sr", async (req, res) => {
-  const { code } = req.body;
+  const { otp } = req.body;
   const currentTime = Date.now();
   const _user = specialRq.filter(
-    (user) => user.code === code && user.expiryTime > currentTime
+    (user) => user.code === otp && user.expiryTime > currentTime
   );
 
   if (_user.length > 0) {
     //remove the request from list
-    specialRq = specialRq.filter((user) => user.code != code);
+    specialRq = specialRq.filter((user) => user.code != otp);
     User_list.push({
       email: _user[0].email.toLowerCase(),
       token: _user[0].token,
