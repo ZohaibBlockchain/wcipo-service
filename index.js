@@ -119,7 +119,7 @@ async function Login(email, password) {
       );
       if (filteredUsers.length > 0) {
         //send full details of the user
-        const { password, accountStatus, ...cleanProfile } = users[0].profile;
+        const cleanProfile = { email: users[0].profile.email, fullName: users[0].profile.fullName, address: users[0].profile.address, phone: users[0].profile.phone, country: users[0].profile.country };
         const loginData = { token: token, profile: cleanProfile, works: users[0].works };
         return { message: "Sign-in successful", status: true, loginData: loginData, expiryTime: filteredUsers[0].expiryTime };
       }
@@ -162,12 +162,7 @@ async function Login(email, password) {
             token: token,
             expiryTime: expiryTime,
           });
-          // return {
-          //   message: { token: token, message: "Sign-in successful" },
-          //   status: res,
-          // };
-          //send full details of the user
-          const { password, accountStatus, ...cleanProfile } = users[0].profile;
+          const cleanProfile = { email: users[0].profile.email, fullName: users[0].profile.fullName, address: users[0].profile.address, phone: users[0].profile.phone, country: users[0].profile.country };
           const loginData = { token: token, profile: cleanProfile, works: users[0].works };
           return { message: "Sign-in successful", status: true, loginData: loginData, expiryTime: expiryTime };
         }
@@ -253,12 +248,10 @@ app.post("/api/signin", async (req, res) => {
 // SpecialRequest route
 app.post("/api/sr", async (req, res) => {
   const { otp } = req.body;
-  console.log(specialRq);
   const currentTime = Date.now();
   const _user = specialRq.filter(
     (user) => user.code === parseInt(otp) && user.expiryTime > currentTime
   );
-
 
   if (_user.length > 0) {
     //remove the request from list
@@ -276,9 +269,7 @@ app.post("/api/sr", async (req, res) => {
       ).exec();
 
       if (updatedUser) {
-        console.log("User updated:", updatedUser);
-
-        const { password, accountStatus, ...cleanProfile } = updatedUser.profile;
+        const cleanProfile = { email: updatedUser.profile.email, fullName: updatedUser.profile.fullName, address: updatedUser.profile.address, phone: updatedUser.profile.phone, country: updatedUser.profile.country };
         const loginData = { token: _user[0].token, profile: cleanProfile, works: updatedUser.works, expiryTime: _user[0].expiryTime };
         return res
           .status(200)
