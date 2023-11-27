@@ -253,7 +253,7 @@ app.post("/api/signin", async (req, res) => {
 // SpecialRequest route
 app.post("/api/sr", async (req, res) => {
   const { otp } = req.body;
-  console.log(otp);
+  console.log(specialRq);
   const currentTime = Date.now();
   const _user = specialRq.filter(
     (user) => user.code === otp && user.expiryTime > currentTime
